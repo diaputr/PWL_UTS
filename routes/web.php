@@ -27,7 +27,6 @@ Auth::routes();
 Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     // Route::resource();
 });
