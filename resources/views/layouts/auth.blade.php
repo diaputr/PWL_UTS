@@ -18,7 +18,7 @@
 </head>
 
 <body class="hold-transition login-page">
-
+    @include('sweetalert::alert')
     @yield('content')
 
     <!-- jQuery -->
