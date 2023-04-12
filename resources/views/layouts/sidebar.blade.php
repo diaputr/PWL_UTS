@@ -14,14 +14,15 @@
                 <img src="{{ asset('assets/dist/img/anim.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{auth()->user()->name}}</a>
+                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
             </div>
         </div>
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                    aria-label="Search">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
                         <i class="fas fa-search fa-fw"></i>
@@ -32,7 +33,8 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}"
@@ -49,6 +51,24 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Anggota
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('buku.index') }}"
+                        class="nav-link {{ request()->routeIs('buku.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
+                            Buku
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('peminjaman.index') }}"
+                        class="nav-link {{ request()->routeIs('peminjaman.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>
+                            Peminjaman
                         </p>
                     </a>
                 </li>
