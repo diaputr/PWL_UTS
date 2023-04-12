@@ -4,6 +4,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PeminjamanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/anggota', AnggotaController::class)->name('*', 'anggota');
     Route::resource('/buku', BukuController::class)->name('*', 'buku');
     Route::resource('/peminjaman', PeminjamanController::class)->name('*', 'peminjaman');
+    Route::resource('/kategori', KategoriController::class)->name('*', 'kategori');
 });
