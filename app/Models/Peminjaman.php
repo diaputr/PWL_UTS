@@ -14,5 +14,16 @@ class Peminjaman extends Model
         'id_anggota',
         'tgl_pinjam',
         'tgl_kembali',
+        'status',
     ];
+
+    public function buku()
+    {
+        return $this->belongsTo(Buku::class, 'kode_buku');
+    }
+
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'id_anggota');
+    }
 }

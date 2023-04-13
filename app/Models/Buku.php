@@ -21,11 +21,13 @@ class Buku extends Model
         'th_terbit',
     ];
 
-    /**
-     * Get the author of the post.
-     */
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(Kategori::class);
+    }
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'kode_buku');
     }
 }

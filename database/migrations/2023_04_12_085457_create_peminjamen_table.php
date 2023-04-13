@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_buku', 6);
-            $table->bigInteger('id_anggota');
+            $table->foreignIdFor(\App\Models\Buku::class, 'kode_buku');
+            $table->foreignIdFor(\App\Models\Anggota::class, 'id_anggota');
             $table->date('tgl_pinjam')->nullable();
             $table->date('tgl_kembali')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

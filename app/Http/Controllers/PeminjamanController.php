@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
+use App\Models\Buku;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
@@ -27,7 +29,11 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
-        return view('peminjaman.form-peminjaman', ["title" => "Tambah Peminjaman", "url_form" => url('/peminjaman'),]);
+        return view('peminjaman.form-peminjaman', [
+            "title" => "Tambah Peminjaman", "url_form" => url('/peminjaman'),
+            'buku' => Buku::all(),
+            'anggota' => Anggota::all(),
+        ]);
     }
 
     /**
@@ -46,7 +52,13 @@ class PeminjamanController extends Controller
         ]);
 
         try {
-            Peminjaman::create($request->except('_token'));
+            $buku = Buku::find($request->kode_buku);
+            $anggota = Anggota::find($request->id_anggota);
+            Peminjaman::create($request->except('_token'))->each(function ($peminjaman) use ($buku, $anggota) {
+                $peminjaman->buku()->associate($buku);
+                $peminjaman->anggota()->associate($anggota);
+                $peminjaman->save();
+            });
 
             return redirect()->route('peminjaman.index')
                 ->with('success', 'Data Peminjaman Berhasil Ditambahkan!');
@@ -79,6 +91,8 @@ class PeminjamanController extends Controller
             "title" => "Edit Peminjaman",
             "url_form" => url('/peminjaman/' . $id),
             "peminjaman" => Peminjaman::find($id),
+            'buku' => Buku::all(),
+            'anggota' => Anggota::all(),
         ]);
     }
 
@@ -98,8 +112,11 @@ class PeminjamanController extends Controller
             'tgl_kembali' => 'required|date',
         ]);
 
+        $buku = $request->except('_token');
+        $buku['status'] = $request['status'] == 'on';
+
         try {
-            Peminjaman::find($id)->update($request->except('_token'));
+            Peminjaman::find($id)->update($buku);
 
             return redirect()->route('peminjaman.index')
                 ->with('success', 'Data Peminjaman Berhasil Diubah!');
