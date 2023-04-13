@@ -7,7 +7,7 @@
 @section('content')
     <div class="login-box">
         <div class="login-logo">
-            <a href=""><b>PWL</b></a>
+            <a href=""><b>Perpus PWL</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
@@ -16,7 +16,7 @@
 
                 <form action="{{ url('/login') }}" method="post">
                     @csrf
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3 mt-3">
                         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Email">
                         <div class="input-group-append">
@@ -57,19 +57,7 @@
                     </div>
                 </form>
 
-                {{-- <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                </div> --}}
-
-                <!-- /.social-auth-links -->
-
-                <p class="mb-1">
+                <p class="mb-1 mt-5">
                     <a href="">Forgot password</a>
                 </p>
                 <p class="mb-0">
