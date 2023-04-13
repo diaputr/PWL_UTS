@@ -17,7 +17,7 @@ class BukuController extends Controller
     {
         return view('buku.index', [
             'title' => 'List Buku',
-            'buku' => Buku::all()->sortBy('kode', descending: true),
+            'buku' => Buku::all()->sortBy('created_at', descending: true),
         ]);
     }
 
@@ -52,11 +52,7 @@ class BukuController extends Controller
         ]);
 
         try {
-            $kategori = Kategori::find($request->kategori_id);
-            Buku::create($request->except('_token'))->each(function ($buku) use ($kategori) {
-                $buku->kategori()->associate($kategori);
-                $buku->save();
-            });
+            Buku::create($request->except('_token'));
 
             return redirect()->route('buku.index')
                 ->with('success', 'Data Buku Berhasil Ditambahkan!');

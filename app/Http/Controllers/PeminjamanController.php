@@ -52,13 +52,7 @@ class PeminjamanController extends Controller
         ]);
 
         try {
-            $buku = Buku::find($request->kode_buku);
-            $anggota = Anggota::find($request->id_anggota);
-            Peminjaman::create($request->except('_token'))->each(function ($peminjaman) use ($buku, $anggota) {
-                $peminjaman->buku()->associate($buku);
-                $peminjaman->anggota()->associate($anggota);
-                $peminjaman->save();
-            });
+            Peminjaman::create($request->except('_token'));
 
             return redirect()->route('peminjaman.index')
                 ->with('success', 'Data Peminjaman Berhasil Ditambahkan!');
