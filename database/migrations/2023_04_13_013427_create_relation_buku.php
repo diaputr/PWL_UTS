@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bukus', function (Blueprint $table) {
-            $table->string('kode', 6)->primary();
-            $table->string('judul', 50);
-            $table->string('penulis', 30);
-            $table->string('penerbit', 30);
-            $table->string('th_terbit', 4);
-            $table->timestamps();
+        Schema::table('bukus', function (Blueprint $table) {
+            $table->foreignIdFor(\App\Models\Kategori::class)->nullable()->after('kode');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bukus');
+        Schema::dropColumns('bukus', [
+            'kategori_id'
+        ]);
     }
 };

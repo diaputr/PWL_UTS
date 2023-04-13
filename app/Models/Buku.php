@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Buku extends Model
 {
@@ -13,10 +14,18 @@ class Buku extends Model
     protected $primaryKey = 'kode';
     protected $fillable = [
         'kode',
+        'kategori_id',
         'judul',
-        'kategori',
         'penulis',
         'penerbit',
         'th_terbit',
     ];
+
+    /**
+     * Get the author of the post.
+     */
+    public function kategori(): BelongsTo
+    {
+        return $this->belongsTo(Kategori::class);
+    }
 }

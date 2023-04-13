@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
@@ -27,7 +28,10 @@ class BukuController extends Controller
      */
     public function create()
     {
-        return view('buku.form-buku', ["title" => "Tambah Buku", "url_form" => url('/buku'),]);
+        return view('buku.form-buku', [
+            "title" => "Tambah Buku", "url_form" => url('/buku'),
+            'kategori' => Kategori::all()->sortBy('nama', descending: true),
+        ]);
     }
 
     /**
@@ -40,15 +44,19 @@ class BukuController extends Controller
     {
         $request->validate([
             'kode' => 'required|max:6',
+            'kategori_id' => 'required',
             'judul' => 'required|max:50',
-            'kategori' => 'required|max:30',
             'penulis' => 'required|max:30',
             'penerbit' => 'required|max:30',
             'th_terbit' => 'required|max:4',
         ]);
 
         try {
-            Buku::create($request->except('_token'));
+            $kategori = Kategori::find($request->kategori_id);
+            Buku::create($request->except('_token'))->each(function ($buku) use ($kategori) {
+                $buku->kategori()->associate($kategori);
+                $buku->save();
+            });
 
             return redirect()->route('buku.index')
                 ->with('success', 'Data Buku Berhasil Ditambahkan!');
@@ -78,7 +86,7 @@ class BukuController extends Controller
     public function edit($id)
     {
         $buku = Buku::find($id);
-        return view('buku.form-buku',  ["title" => "Edit Buku", "url_form" => url('/buku/' . $id), "buku" => $buku]);
+        return view('buku.form-buku',  ["title" => "Edit Buku", "url_form" => route('buku.update', [$id]), "buku" => $buku, 'kategori' => Kategori::all()->sortBy('nama', descending: true),]);
     }
 
     /**
@@ -92,14 +100,15 @@ class BukuController extends Controller
     {
         $request->validate([
             'kode' => 'required|max:6',
+            'kategori_id' => 'required',
             'judul' => 'required|max:50',
-            'kategori' => 'required|max:30',
             'penulis' => 'required|max:30',
             'penerbit' => 'required|max:30',
             'th_terbit' => 'required|max:4',
         ]);
 
         try {
+            $kategori = Kategori::find($request->kategori_id);
             Buku::find($id)->update($request->except('_token'));
 
             return redirect()->route('buku.index')

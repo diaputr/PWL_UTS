@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode_buku', 6);
             $table->bigInteger('id_anggota');
-            $table->date('tgl_pinjam');
-            $table->date('tgl_kembali');
+            $table->date('tgl_pinjam')->nullable();
+            $table->date('tgl_kembali')->nullable();
             $table->timestamps();
         });
     }
