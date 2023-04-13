@@ -16,7 +16,7 @@ class KategoriController extends Controller
     {
         return view('kategori.index', [
             'title' => 'List Kategori',
-            'kategoris' => Kategori::all(),
+            'kategoris' => Kategori::all()->sortBy('kode', descending: true),
         ]);
     }
 
