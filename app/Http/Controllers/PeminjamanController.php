@@ -16,9 +16,22 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
+        if (request('search')) {
+            $p = Peminjaman::whereHas('buku', function ($q) {
+                $q->where('judul', 'like', '%' . request('search') . '%');
+            })
+                ->orWhereHas('anggota', function ($q) {
+                    $q->where('nama', 'like', '%' . request('search') . '%');
+                })
+                ->orWhere('tgl_pinjam', 'like', '%' . request('search') . '%')
+                ->orWhere('tgl_kembali', 'like', '%' . request('search') . '%')
+                ->paginate(10);
+        } else {
+            $p = Peminjaman::paginate(10);
+        }
         return view('peminjaman.index', [
             'title' => 'List Peminjaman',
-            'peminjaman' => Peminjaman::all()->sortBy('id', descending: true),
+            'peminjaman' => $p
         ]);
     }
 
