@@ -106,8 +106,10 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         try {
-            Kategori::find($id)->delete();
-            return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus!');
+            Kategori::findOrFail($id)->delete();
+
+            return response()
+                ->json(['status' => 'Data Kategori Berhasil Dihapus!']);
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Kategori gagal dihapus!');
         }

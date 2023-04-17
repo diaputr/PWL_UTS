@@ -129,10 +129,10 @@ class PeminjamanController extends Controller
     public function destroy($id)
     {
         try {
-            Peminjaman::find($id)->delete();
+            Peminjaman::findOrFail($id)->delete();
 
-            return redirect()->route('peminjaman.index')
-                ->with('success', 'Data Peminjaman Berhasil Dihapus!');
+            return response()
+                ->json(['status' => 'Data Peminjaman Berhasil Dihapus!']);
         } catch (\Exception $e) {
             return redirect()->route('peminjaman.index')
                 ->with('error', 'Data Peminjaman Gagal Dihapus!');

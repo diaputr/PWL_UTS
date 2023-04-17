@@ -124,10 +124,10 @@ class BukuController extends Controller
     public function destroy($id)
     {
         try {
-            Buku::find($id)->delete();
+            Buku::findOrFail($id)->delete();
 
-            return redirect()->route('buku.index')
-                ->with('success', 'Data Buku Berhasil Dihapus!');
+            return response()
+                ->json(['status' => 'Data Buku Berhasil Dihapus!']);
         } catch (\Exception $e) {
             return redirect()->route('buku.index')
                 ->with('error', 'Data Buku Gagal Dihapus!');

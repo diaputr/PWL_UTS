@@ -30,6 +30,7 @@
                     @endphp
                     @foreach ($anggotas as $item)
                         <tr>
+                            <input type="hidden" class="delete_id" value="{{ $item->id }}">
                             <td>{{ $i++ }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->no_telp }}</td>
@@ -41,9 +42,11 @@
                                         <a href="{{ route('anggota.edit', $item->id) }}" class="btn btn-sm btn-warning"><i
                                                 class="fas fa-pen"></i>
                                             edit</a>
+
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i>
+                                        <button type="submit" class="btn btn-sm btn-danger btndelete show_confirm"
+                                            data-toggle="tooltip" title='Delete'> <i class="fas fa-trash"></i>
                                             hapus</button>
                                     </div>
                                 </form>
@@ -71,12 +74,60 @@
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Page specific script -->
     <script>
         $(function() {
             $('#tabelku').DataTable({
                 "responsive": true
             }).buttons().container().appendTo('#tabelku_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.btndelete').click(function(e) {
+                e.preventDefault();
+
+                var deleteid = $(this).closest("tr").find('.delete_id').val();
+
+                swal({
+                        title: `Apakah yakin?`,
+                        text: "Setelah dihapus, data tidak dapat kembali.",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+
+                            var data = {
+                                "_token": $('input[name=_token]').val(),
+                                'id': deleteid,
+                            };
+                            $.ajax({
+                                type: "DELETE",
+                                url: 'anggota/' + deleteid,
+                                data: data,
+                                success: function(response) {
+                                    swal(response.status, {
+                                            icon: "success",
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                }
+                            });
+                        }
+                    });
+            });
         });
     </script>
 @endpush

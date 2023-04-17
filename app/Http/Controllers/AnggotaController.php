@@ -116,10 +116,10 @@ class AnggotaController extends Controller
     public function destroy($id)
     {
         try {
-            Anggota::find($id)->delete();
+            Anggota::findOrFail($id)->delete();
 
-            return redirect()->route('anggota.index')
-                ->with('success', 'Data Anggota Berhasil Dihapus!');
+            return response()
+                ->json(['status' => 'Data Anggota Berhasil Dihapus!']);
         } catch (\Exception $e) {
             return redirect()->route('anggota.index')
                 ->with('error', 'Data Anggota Gagal Dihapus!');

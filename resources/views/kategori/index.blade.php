@@ -29,6 +29,7 @@
                     @endphp
                     @foreach ($kategoris as $item)
                         <tr>
+                            <input type="hidden" class="delete_id" value="{{ $item->id }}">
                             <td>{{ $i++ }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->deskripsi }}</td>
@@ -41,7 +42,8 @@
 
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"> <i class="fas fa-trash"></i>
+                                        <button type="submit" class="btn btn-sm btn-danger btndelete show_confirm"
+                                            data-toggle="tooltip" title='Delete'> <i class="fas fa-trash"></i>
                                             hapus</button>
                                     </div>
                                 </form>
@@ -56,25 +58,71 @@
 @endsection
 
 @push('custom_js')
-    @push('custom_js')
-        <!-- DataTables  & Plugins -->
-        <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-        <!-- Page specific script -->
-        <script>
-            $(function() {
-                $('#tabelku').DataTable();
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Page specific script -->
+    <script>
+        $(function() {
+            $('#tabelku').DataTable();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
-        </script>
-    @endpush
+
+            $('.btndelete').click(function(e) {
+                e.preventDefault();
+
+                var deleteid = $(this).closest("tr").find('.delete_id').val();
+
+                swal({
+                        title: `Apakah yakin?`,
+                        text: "Setelah dihapus, data tidak dapat kembali.",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+
+                            var data = {
+                                "_token": $('input[name=_token]').val(),
+                                'id': deleteid,
+                            };
+                            $.ajax({
+                                type: "DELETE",
+                                url: 'kategori/' + deleteid,
+                                data: data,
+                                success: function(response) {
+                                    swal(response.status, {
+                                            icon: "success",
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
 @endpush
