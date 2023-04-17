@@ -2,9 +2,10 @@
 
 @push('custom_css')
 <!-- DataTables -->
+{{--
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}"> --}}
 @endpush
 
 @section('content')
@@ -74,6 +75,7 @@
 @endsection
 
 @push('custom_js')
+{{--
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -87,15 +89,15 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(function() {
-            $('#tabelku').DataTable({
-                "responsive": true
-            }).buttons().container().appendTo('#tabelku_wrapper .col-md-6:eq(0)');
-        });
-</script>
+        $('#tabelku').DataTable({
+            "responsive": true
+        }).buttons().container().appendTo('#tabelku_wrapper .col-md-6:eq(0)');
+    });
+</script> --}}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
     $(document).ready(function() {

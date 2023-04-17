@@ -14,9 +14,14 @@ class KategoriController extends Controller
      */
     public function index()
     {
+        if (request('search')) {
+            $k = Kategori::where('nama', 'like', '%' . request('search') . '%')->paginate(10);
+        } else {
+            $k = Kategori::paginate(10);
+        }
         return view('kategori.index', [
             'title' => 'List Kategori',
-            'kategoris' => Kategori::all()->sortBy('created_at', descending: true),
+            'kategoris' => $k,
         ]);
     }
 
