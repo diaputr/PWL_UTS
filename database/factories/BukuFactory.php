@@ -19,8 +19,8 @@ class BukuFactory extends Factory
         return [
             'kode' => 'BK' . rand(1, 9999),
             'kategori_id' => rand(1, 5),
-            'judul' => fake()->jobTitle(),
-            'penulis' => fake()->name(),
+            'judul' => fake()->sentence(2),
+            'penulis' => fake()->firstName(),
             'penerbit' => fake()->company(),
             'th_terbit' => fake()->year(),
         ];

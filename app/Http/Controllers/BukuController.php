@@ -15,9 +15,18 @@ class BukuController extends Controller
      */
     public function index()
     {
+        if (request('search')) {
+            $buku = Buku::where('judul', 'like', '%' . request('search') . '%')
+                ->orWhere('penulis', 'like', '%' . request('search') . '%')
+                ->orWhere('penerbit', 'like', '%' . request('search') . '%')
+                ->orWhere('th_terbit', 'like', '%' . request('search') . '%')
+                ->paginate(10);
+        } else {
+            $buku = Buku::paginate(10);
+        }
         return view('buku.index', [
             'title' => 'List Buku',
-            'buku' => Buku::all()->sortBy('created_at', descending: true),
+            'buku' => $buku,
         ]);
     }
 

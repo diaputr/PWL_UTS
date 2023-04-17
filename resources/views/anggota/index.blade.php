@@ -9,23 +9,16 @@
 
 @section('content')
 <div class="card">
+    <!-- /.card-header -->
     <div class="card-header">
         <a href="{{ route('anggota.create') }}" class="btn btn-outline-success"> <i class="fas fa-plus"></i> Tambah</a>
     </div>
-    <!-- /.card-header -->
     <div class="card-body">
-        <div class="row d-flex justify-between"
-            style="width: 100%; justify-content: space-between; align-items: center; margin: 0">
-            <form action="{{ route('anggota.index')}}" class="col-md-4" style="padding: 0">
-                @csrf
-                <div class="input-group input-group-sm ">
-                    <input type="text" name="search" class="form-control input-sm " placeholder="Cari Anggota">
-                    <button class="input-group-text input-sm" id="basic-addon2" type="submit">
-                        <i class="fa fa-search" style="font-size:16px"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+        <form action="{{ route('anggota.index')}}" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Cari Anggota" name="search"
+                aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
         <br>
         <table class="table table-bordered">
             <thead>
