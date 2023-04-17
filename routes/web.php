@@ -33,6 +33,7 @@ Route::get('/logout', [LoginController::class, 'logout']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::resource('/anggota', AnggotaController::class)->name('*', 'anggota');
+    Route::get('/anggota/getAnggota', [AnggotaController::class, 'getAnggota'])->name('anggota.getAnggota');
     Route::resource('/buku', BukuController::class)->name('*', 'buku');
     Route::resource('/peminjaman', PeminjamanController::class)->name('*', 'peminjaman');
     Route::resource('/kategori', KategoriController::class)->name('*', 'kategori');
